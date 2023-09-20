@@ -18,7 +18,7 @@ public class HttpMethods {
     private final static String USERNAME_URL = "https://jsonplaceholder.typicode.com/users?username=";
     private final static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public static void invokePOST(UserDTO user) throws URISyntaxException, IOException, InterruptedException {
+    public static void createUser(UserDTO user) throws URISyntaxException, IOException, InterruptedException {
         HttpRequest request = HttpUtils.getBuilder(USERS_URL)
                 .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(user)))
                 .build();
@@ -27,7 +27,7 @@ public class HttpMethods {
         HttpUtils.displayResponseInfo(response);
     }
 
-    public static void invokePUT(UserDTO user, int userId) throws URISyntaxException, IOException, InterruptedException {
+    public static void updateUser(UserDTO user, int userId) throws URISyntaxException, IOException, InterruptedException {
         HttpRequest request = HttpUtils.getBuilder(USERS_URL + userId)
                 .PUT(HttpRequest.BodyPublishers.ofString(gson.toJson(user)))
                 .build();
@@ -36,7 +36,7 @@ public class HttpMethods {
         HttpUtils.displayResponseInfo(response);
     }
 
-    public static void invokeDELETE(int userId) throws URISyntaxException, IOException, InterruptedException {
+    public static void removeUser(int userId) throws URISyntaxException, IOException, InterruptedException {
         HttpRequest request = HttpUtils.getBuilder(USERS_URL + userId)
                 .DELETE()
                 .build();
@@ -45,7 +45,7 @@ public class HttpMethods {
         HttpUtils.displayResponseInfo(response);
     }
 
-    public static void invokeGET() throws URISyntaxException, IOException, InterruptedException {
+    public static void getAllUsers() throws URISyntaxException, IOException, InterruptedException {
         HttpRequest request = HttpUtils.getBuilder(USERS_URL)
                 .GET()
                 .build();
@@ -54,7 +54,7 @@ public class HttpMethods {
         HttpUtils.displayResponseInfo(response);
     }
 
-    public static void invokeGET(int userId) throws URISyntaxException, IOException, InterruptedException {
+    public static void getUser(int userId) throws URISyntaxException, IOException, InterruptedException {
         HttpRequest request = HttpUtils.getBuilder(USERS_URL + userId)
                 .GET()
                 .build();
@@ -63,7 +63,7 @@ public class HttpMethods {
         HttpUtils.displayResponseInfo(response);
     }
 
-    public static void invokeGET(String username) throws URISyntaxException, IOException, InterruptedException {
+    public static void getUser(String username) throws URISyntaxException, IOException, InterruptedException {
         HttpRequest request = HttpUtils.getBuilder(USERNAME_URL + username)
                 .GET()
                 .build();

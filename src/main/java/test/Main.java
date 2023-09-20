@@ -13,12 +13,12 @@ public class Main {
     }
 
     public static void testAllHttpMethods(UserDTO user, int userId, String username) throws URISyntaxException, IOException, InterruptedException {
-        HttpMethods.invokePOST(user);
-        HttpMethods.invokePUT(user, userId);
-        HttpMethods.invokeDELETE(userId);
-        HttpMethods.invokeGET();
-        HttpMethods.invokeGET(userId);
-        HttpMethods.invokeGET(username);
+        HttpMethods.createUser(user);
+        HttpMethods.updateUser(user, userId);
+        HttpMethods.removeUser(userId);
+        HttpMethods.getAllUsers();
+        HttpMethods.getUser(userId);
+        HttpMethods.getUser(username);
         HttpMethods.getOpenTasks(userId);
         HttpMethods.getCommentsOnLastPost(userId);
     }
