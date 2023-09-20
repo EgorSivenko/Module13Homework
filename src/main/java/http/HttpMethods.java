@@ -2,7 +2,7 @@ package http;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import user.User;
+import dto.UserDTO;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -18,7 +18,7 @@ public class HttpMethods {
     private final static String USERNAME_URL = "https://jsonplaceholder.typicode.com/users?username=";
     private final static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public static void invokePOST(User user) throws URISyntaxException, IOException, InterruptedException {
+    public static void invokePOST(UserDTO user) throws URISyntaxException, IOException, InterruptedException {
         HttpRequest request = HttpUtils.getBuilder(USERS_URL)
                 .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(user)))
                 .build();
@@ -27,7 +27,7 @@ public class HttpMethods {
         HttpUtils.displayResponseInfo(response);
     }
 
-    public static void invokePUT(User user, int userId) throws URISyntaxException, IOException, InterruptedException {
+    public static void invokePUT(UserDTO user, int userId) throws URISyntaxException, IOException, InterruptedException {
         HttpRequest request = HttpUtils.getBuilder(USERS_URL + userId)
                 .PUT(HttpRequest.BodyPublishers.ofString(gson.toJson(user)))
                 .build();

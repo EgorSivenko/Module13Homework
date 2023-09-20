@@ -1,4 +1,4 @@
-package user;
+package dto;
 
 public class Address {
     private String street;
