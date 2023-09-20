@@ -12,19 +12,26 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
 public class HttpUtils {
-    public static HttpRequest.Builder getBuilder(String URL) throws URISyntaxException {
+    public static HttpRequest.Builder createRequestBuilder(String URL) throws URISyntaxException {
         return HttpRequest.newBuilder()
                 .header("Content-Type", "application/json")
                 .timeout(Duration.of(10, ChronoUnit.SECONDS))
                 .uri(new URI(URL));
     }
 
-    public static HttpResponse<String> getResponse(HttpRequest request) throws IOException, InterruptedException {
+    private static HttpClient buildHttpClient() {
         return HttpClient.newBuilder()
                 .followRedirects(HttpClient.Redirect.ALWAYS)
                 .cookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_NONE))
-                .build()
-                .send(request, HttpResponse.BodyHandlers.ofString());
+                .build();
+    }
+
+    public static HttpResponse<String> getStringResponse(HttpRequest request) throws IOException, InterruptedException {
+        return buildHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    public static <T> HttpResponse<T> getResponse(HttpRequest request, HttpResponse.BodyHandler<T> bodyHandler) throws IOException, InterruptedException {
+        return buildHttpClient().send(request, bodyHandler);
     }
 
     public static <T> void displayResponseInfo(HttpResponse<T> response) {

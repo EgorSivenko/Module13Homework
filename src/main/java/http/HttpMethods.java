@@ -6,7 +6,6 @@ import dto.UserDTO;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Path;
@@ -19,78 +18,76 @@ public class HttpMethods {
     private final static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static void createUser(UserDTO user) throws URISyntaxException, IOException, InterruptedException {
-        HttpRequest request = HttpUtils.getBuilder(USERS_URL)
+        HttpRequest request = HttpUtils.createRequestBuilder(USERS_URL)
                 .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(user)))
                 .build();
 
-        HttpResponse<String> response = HttpUtils.getResponse(request);
+        HttpResponse<String> response = HttpUtils.getStringResponse(request);
         HttpUtils.displayResponseInfo(response);
     }
 
     public static void updateUser(UserDTO user, int userId) throws URISyntaxException, IOException, InterruptedException {
-        HttpRequest request = HttpUtils.getBuilder(USERS_URL + userId)
+        HttpRequest request = HttpUtils.createRequestBuilder(USERS_URL + userId)
                 .PUT(HttpRequest.BodyPublishers.ofString(gson.toJson(user)))
                 .build();
 
-        HttpResponse<String> response = HttpUtils.getResponse(request);
+        HttpResponse<String> response = HttpUtils.getStringResponse(request);
         HttpUtils.displayResponseInfo(response);
     }
 
     public static void removeUser(int userId) throws URISyntaxException, IOException, InterruptedException {
-        HttpRequest request = HttpUtils.getBuilder(USERS_URL + userId)
+        HttpRequest request = HttpUtils.createRequestBuilder(USERS_URL + userId)
                 .DELETE()
                 .build();
 
-        HttpResponse<String> response = HttpUtils.getResponse(request);
+        HttpResponse<String> response = HttpUtils.getStringResponse(request);
         HttpUtils.displayResponseInfo(response);
     }
 
     public static void getAllUsers() throws URISyntaxException, IOException, InterruptedException {
-        HttpRequest request = HttpUtils.getBuilder(USERS_URL)
+        HttpRequest request = HttpUtils.createRequestBuilder(USERS_URL)
                 .GET()
                 .build();
 
-        HttpResponse<String> response = HttpUtils.getResponse(request);
+        HttpResponse<String> response = HttpUtils.getStringResponse(request);
         HttpUtils.displayResponseInfo(response);
     }
 
     public static void getUser(int userId) throws URISyntaxException, IOException, InterruptedException {
-        HttpRequest request = HttpUtils.getBuilder(USERS_URL + userId)
+        HttpRequest request = HttpUtils.createRequestBuilder(USERS_URL + userId)
                 .GET()
                 .build();
 
-        HttpResponse<String> response = HttpUtils.getResponse(request);
+        HttpResponse<String> response = HttpUtils.getStringResponse(request);
         HttpUtils.displayResponseInfo(response);
     }
 
     public static void getUser(String username) throws URISyntaxException, IOException, InterruptedException {
-        HttpRequest request = HttpUtils.getBuilder(USERNAME_URL + username)
+        HttpRequest request = HttpUtils.createRequestBuilder(USERNAME_URL + username)
                 .GET()
                 .build();
 
-        HttpResponse<String> response = HttpUtils.getResponse(request);
+        HttpResponse<String> response = HttpUtils.getStringResponse(request);
         HttpUtils.displayResponseInfo(response);
     }
 
     public static void getOpenTasks(int userId) throws URISyntaxException, IOException, InterruptedException {
-        HttpRequest request = HttpUtils.getBuilder(USERS_URL + userId + "/todos?completed=false")
+        HttpRequest request = HttpUtils.createRequestBuilder(USERS_URL + userId + "/todos?completed=false")
                 .GET()
                 .build();
 
-        HttpResponse<String> response = HttpUtils.getResponse(request);
+        HttpResponse<String> response = HttpUtils.getStringResponse(request);
         HttpUtils.displayResponseInfo(response);
     }
 
     public static void getCommentsOnLastPost(int userId) throws URISyntaxException, IOException, InterruptedException {
         int postId = userId * 10;
-        HttpRequest request = HttpUtils.getBuilder(POSTS_URL + postId + "/comments")
+        HttpRequest request = HttpUtils.createRequestBuilder(POSTS_URL + postId + "/comments")
                 .GET()
                 .build();
 
-        HttpResponse<Path> response = HttpClient.newHttpClient()
-                .send(request, HttpResponse.BodyHandlers.ofFile(
-                        Paths.get("src/main/resources/user-" + userId + "-post-" + postId + "-comments.json")
-                ));
+        Path path = Paths.get("src/main/resources/user-" + userId + "-post-" + postId + "-comments.json");
+        HttpResponse<Path> response = HttpUtils.getResponse(request, HttpResponse.BodyHandlers.ofFile(path));
         HttpUtils.displayResponseInfo(response);
     }
 }
